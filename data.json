@@ -1,0 +1,614 @@
+{
+  "config": {
+    "calendlyUrl": "https://calendly.com/ring390/nothinkfit",
+    "webhookUrl": "https://hook.us2.make.com/jehbyi9j3rhylxi863nh3ji3u35u6h1b",
+    "webhookMode": "json",
+    "igDmUrl": "https://ig.me/m/kmf_kuo",
+    "dmKeyword": "系統",
+    "commitmentThreshold": 9,
+    "lowResistanceMaxPercent": 33,
+    "loadingMs": 1500,
+    "loadingStepMs": 500,
+    "autoAdvanceMs": 180
+  },
+  "meta": {
+    "title": "阻力地圖｜3 分鐘找出你瘦不下來的最大阻力",
+    "description": "專為高工時工程師設計的 17 題測驗，畫出你的五大阻力雷達圖，拿到 3 個今天就能做的行動。"
+  },
+  "ui": {
+    "intro": {
+      "kicker": "FU SYSTEM // RESISTANCE_MAP v1",
+      "title": "阻力地圖",
+      "subtitle": "3 分鐘找出你瘦不下來的最大阻力",
+      "desc": "專為高工時工程師設計，共 17 題，結果會畫成你的阻力雷達圖。",
+      "specs": [
+        "17 題",
+        "約 3 分鐘",
+        "免登入"
+      ],
+      "note": "照最近一個月的真實狀況選，第一個直覺通常最準。",
+      "start": "開始測驗"
+    },
+    "nav": {
+      "back": "上一題",
+      "backToIntro": "返回"
+    },
+    "progress": {
+      "question": "Q{n} / {total}",
+      "commitment": "最後一步"
+    },
+    "hints": {
+      "context": "單選，選完自動下一題。",
+      "scale": "最近一個月，這件事多常發生？"
+    },
+    "commitment": {
+      "kicker": "PRIORITY_CHECK",
+      "question": "1 到 10 分，把這個阻力解決掉，對你現在的優先順序有多高？",
+      "minLabel": "1　還好",
+      "maxLabel": "10　現在最重要",
+      "submit": "畫出我的阻力地圖",
+      "groupLabel": "優先順序分數"
+    },
+    "loading": {
+      "kicker": "PROCESSING",
+      "messages": [
+        "正在掃描你的 5 個阻力…",
+        "正在對照你的生活節奏…",
+        "正在畫出你的地圖…"
+      ]
+    },
+    "result": {
+      "kicker": "RESULT // RESISTANCE_MAP",
+      "title": "你的阻力地圖",
+      "radarCaption": "數字越高，這個阻力吃掉你越多生活。",
+      "radarAria": "阻力雷達圖：{list}",
+      "radarAriaItem": "{name} {p}%",
+      "topBadge": "影響最大",
+      "topPrefix": "影響你生活最多的阻力：",
+      "essenceLabel": "本質",
+      "consequenceLabel": "放著不管會怎樣",
+      "lowTopPrefix": "目前最高的一項：",
+      "lowTopValue": "{name}　{p}%",
+      "listSeparator": "、",
+      "actionsTitle": "今天就能做的 3 件事",
+      "actionsIntro": "挑一件，今天做完就好。",
+      "minutes": "約 {m} 分鐘",
+      "percent": "{p}%",
+      "othersTitle": "其他排在前面的阻力",
+      "shareHint": "這個網址會還原你的阻力地圖，截圖或存下網址都可以。",
+      "restart": "重新測驗",
+      "kickers": {
+        "low": "LOW_RESISTANCE",
+        "top": "TOP_RESISTANCE // {code}",
+        "actions": "ACTIONS // {code}",
+        "gap": "GAP"
+      }
+    }
+  },
+  "scale": [
+    {
+      "value": 0,
+      "label": "從不"
+    },
+    {
+      "value": 1,
+      "label": "偶爾"
+    },
+    {
+      "value": 2,
+      "label": "常常"
+    },
+    {
+      "value": 3,
+      "label": "幾乎每次"
+    }
+  ],
+  "contextQuestions": [
+    {
+      "id": "goal",
+      "text": "你現在最想處理的是哪一件事？",
+      "options": [
+        "把體重降下來",
+        "瘦下來之後穩定維持，不再復胖",
+        "把體態線條練出來",
+        "找回下班後的精神和體力"
+      ]
+    },
+    {
+      "id": "whyNow",
+      "text": "這一次為什麼想現在處理？",
+      "options": [
+        "體重開始反彈了",
+        "有一個重要的日子在前面（婚禮、換工作、考試、旅行）",
+        "已經試過很多次，不想再重來",
+        "想找到真的能維持的方法"
+      ]
+    }
+  ],
+  "resistanceOrder": [
+    "D",
+    "P",
+    "S",
+    "E",
+    "U"
+  ],
+  "resistances": {
+    "D": {
+      "name": "決策成本",
+      "axisLabel": "決策",
+      "definition": "每一餐都要想吃什麼、選哪家、怎麼配，下班後決策力已經用完。",
+      "voice": [
+        "現在什麼都要做決定",
+        "沒時間想要吃什麼"
+      ],
+      "diagnosis": {
+        "essence": "你的意志力被每天大量的小決定提早用完，到了吃飯的時間，剩下的只夠選最快的那一個。",
+        "consequence": "這個阻力一直在，每一餐都會重新消耗你一次，計畫很難撐過忙碌的一週。"
+      },
+      "actions": [
+        {
+          "minutes": 5,
+          "text": "打開備忘錄，寫下加班日固定 3 選 1：三個你隨時買得到、吃了不後悔的選項。之後加班日只從這 3 個選。"
+        },
+        {
+          "minutes": 3,
+          "text": "今晚就決定明天的第一餐並買好或訂好。決策留給白天的你，別留給累了的你。"
+        },
+        {
+          "minutes": 1,
+          "text": "設定一分鐘規則：進超商或餐廳前先鎖定蛋白質來源，再選其他，一分鐘內結帳。"
+        }
+      ]
+    },
+    "P": {
+      "name": "體力成本",
+      "axisLabel": "體力",
+      "definition": "煮飯、備餐、洗碗、去運動，要花的力氣和時間。",
+      "voice": [
+        "下班很累",
+        "很懶得煮",
+        "一鍋搞定最好"
+      ],
+      "diagnosis": {
+        "essence": "你的體力在下班前就被工作用完，煮飯、洗碗、運動都要從剩下的電量裡扣。",
+        "consequence": "每累到選最快的那條路一次，飲食和運動就少一次被執行的機會。"
+      },
+      "actions": [
+        {
+          "minutes": 10,
+          "text": "挑一道一鍋搞定的料理，這週只煮這一道，洗碗數量降到一個鍋。"
+        },
+        {
+          "minutes": 5,
+          "text": "把今晚的運動門檻降到「穿上鞋就算完成」，先做 5 分鐘，做完就可以停。"
+        },
+        {
+          "minutes": 20,
+          "text": "下一次備餐直接做 2 餐份量，把明天的體力成本今天先付掉。"
+        }
+      ]
+    },
+    "S": {
+      "name": "社交成本",
+      "axisLabel": "社交",
+      "definition": "聚餐、人情、被勸食、拒絕別人的尷尬。",
+      "voice": [
+        "一聚餐就想下週再開始",
+        "人情壓力"
+      ],
+      "diagnosis": {
+        "essence": "你的計畫在社交場合要和人情面子競爭，多數時候面子贏。",
+        "consequence": "每一場聚餐都變成重新開始的理由，進度一直被歸零。"
+      },
+      "actions": [
+        {
+          "minutes": 3,
+          "text": "寫一句聚餐時婉拒勸食的話，存在手機備忘錄，講出口前先在心裡演練一次。"
+        },
+        {
+          "minutes": 5,
+          "text": "聚餐前先吃一份蛋白質墊底，到場再點，不用餓著進場。"
+        },
+        {
+          "minutes": 3,
+          "text": "下一次聚餐前先看菜單，出門前就選定 2 道，到場直接點。"
+        }
+      ]
+    },
+    "E": {
+      "name": "情緒代償",
+      "axisLabel": "情緒",
+      "definition": "用食物處理壓力和疲勞，宵夜、甜食、暴食。",
+      "voice": [
+        "壓力大就想吃",
+        "今天這麼累吃點東西是應該的"
+      ],
+      "diagnosis": {
+        "essence": "食物被你用來處理壓力和疲勞，吃下去的是情緒，熱量只是順便。",
+        "consequence": "壓力越大失控越頻繁，事後的自責又推高下一次的壓力，形成一個循環。"
+      },
+      "actions": [
+        {
+          "minutes": 10,
+          "text": "下次想吃宵夜時，先喝水等 10 分鐘，然後問自己：我是餓，還是累？"
+        },
+        {
+          "minutes": 5,
+          "text": "列 3 個不含食物的替代獎勵（熱水澡、一集影片、出門散步），貼在冰箱上。"
+        },
+        {
+          "minutes": 2,
+          "text": "把最常失控吃的那樣東西，移到需要多走兩步才拿得到的位置。"
+        }
+      ]
+    },
+    "U": {
+      "name": "不確定性",
+      "axisLabel": "不確定",
+      "definition": "不知道哪個方法適合、會不會又失敗、會不會復胖。",
+      "voice": [
+        "怕又白做一次",
+        "怕瘦下來又胖回去"
+      ],
+      "diagnosis": {
+        "essence": "你缺一個能被驗證的方向，每一次重新開始都像在賭。",
+        "consequence": "試錯的次數越多，對自己的信心越低，最後連開始都變得困難。"
+      },
+      "actions": [
+        {
+          "minutes": 10,
+          "text": "寫下過去試過的 3 個方法，每個標註「為什麼停掉」，找出重複出現的那個原因。"
+        },
+        {
+          "minutes": 5,
+          "text": "今天量一次體重和腰圍，記下起點，14 天後再量一次，讓數字替你回答。"
+        },
+        {
+          "minutes": 3,
+          "text": "從你手上的方法裡挑一個，決定 30 天內不換，不再重新研究。"
+        }
+      ]
+    }
+  },
+  "questionOrder": [
+    "D1",
+    "P1",
+    "S1",
+    "E1",
+    "U1",
+    "D2",
+    "P2",
+    "S2",
+    "E2",
+    "U2",
+    "D3",
+    "P3",
+    "S3",
+    "E3",
+    "U3"
+  ],
+  "questions": {
+    "D1": {
+      "resistance": "D",
+      "text": "下班後要決定晚餐吃什麼，光想就覺得累。"
+    },
+    "P1": {
+      "resistance": "P",
+      "text": "加班或下班後，我累到不想煮，也不想動。"
+    },
+    "S1": {
+      "resistance": "S",
+      "text": "聚餐時，我很難開口說我不吃或少吃。"
+    },
+    "E1": {
+      "resistance": "E",
+      "text": "壓力大的日子，我會用吃東西讓自己好過一點。"
+    },
+    "U1": {
+      "resistance": "U",
+      "text": "我不確定哪一種方法適合我的生活，怕又白做一次。"
+    },
+    "D2": {
+      "resistance": "D",
+      "text": "站在超商或餐廳的菜單前，我常常猶豫很久，最後隨便選一個。"
+    },
+    "P2": {
+      "resistance": "P",
+      "text": "備餐、煮飯、洗碗這些事，會讓我直接選最快的外食。"
+    },
+    "S2": {
+      "resistance": "S",
+      "text": "同事、家人、朋友的邀約，會讓我覺得控制飲食很尷尬。"
+    },
+    "E2": {
+      "resistance": "E",
+      "text": "下班後我會覺得「今天這麼累，吃點東西是應該的」。"
+    },
+    "U2": {
+      "resistance": "U",
+      "text": "我擔心就算這次瘦下來，之後又會復胖。"
+    },
+    "D3": {
+      "resistance": "D",
+      "impact": true,
+      "text": "因為要一直做飲食決定，我常常乾脆放棄，之後再說。"
+    },
+    "P3": {
+      "resistance": "P",
+      "impact": true,
+      "text": "我知道該運動，但一想到要換衣服出門，就決定明天再說。"
+    },
+    "S3": {
+      "resistance": "S",
+      "impact": true,
+      "text": "一遇到聚餐，我就會想「這週算了，下週再開始」。"
+    },
+    "E3": {
+      "resistance": "E",
+      "impact": true,
+      "text": "吃失控一次之後，我會直接放棄整個計畫。"
+    },
+    "U3": {
+      "resistance": "U",
+      "impact": true,
+      "text": "我曾經很努力，但因為看不到結果，就停掉了。"
+    }
+  },
+  "lowType": {
+    "title": "你的阻力偏低",
+    "desc": "5 個阻力都不高，你的生活條件很有利。接下來要看的是你目前最高的那一項，把它處理掉，維持會更輕鬆。"
+  },
+  "gap": {
+    "title": "然後呢？",
+    "lines": [
+      "這 3 個動作可以降低你今天的阻力。",
+      "你的 5 個阻力在生活裡同時運作，要一次掃乾淨，需要一套依你的生活設計的系統。",
+      "這是預約電話要處理的事。"
+    ]
+  },
+  "proof": {
+    "kicker": "PROOF // @kmf_kuo",
+    "title": "這條路我自己走過",
+    "before": {
+      "src": "assets/before.jpg",
+      "width": 480,
+      "height": 360,
+      "label": "以前",
+      "alt": "以前的我，在沙灘上"
+    },
+    "after": {
+      "src": "assets/after.webp",
+      "width": 518,
+      "height": 913,
+      "label": "現在",
+      "alt": "現在的我，體態穩定"
+    },
+    "story": [
+      "左邊是以前的我，右邊是現在。",
+      "中間沒有靠忍，也沒有戒掉外食和甜點。我做的事很單純：把維持身材改成一套不太需要意志力也能跑的系統。",
+      "現在一樣外食、一樣吃甜點，身材穩定留在這裡。"
+    ]
+  },
+  "meals": {
+    "kicker": "MY_PLATE",
+    "title": "我平常就吃這些",
+    "desc": "左右滑動看看，每一餐都在正常生活裡完成。",
+    "items": [
+      {
+        "src": "assets/meal-batch-bake.jpg",
+        "width": 480,
+        "height": 360,
+        "tag": "大量備餐",
+        "caption": "烤盤一次放滿蔬菜和魚，一次做好好幾餐。",
+        "alt": "烤蔬菜、清蒸魚和馬鈴薯"
+      },
+      {
+        "src": "assets/meal-one-pot.jpg",
+        "width": 360,
+        "height": 480,
+        "tag": "一鍋搞定",
+        "caption": "番茄洋蔥一鍋打底，煮一次吃好幾天。",
+        "alt": "平底鍋裡的番茄和洋蔥"
+      },
+      {
+        "src": "assets/meal-convenience.jpg",
+        "width": 540,
+        "height": 720,
+        "tag": "加班日",
+        "caption": "超商雞腿沙拉，3 分鐘選完就結帳。",
+        "alt": "超商雞腿沙拉"
+      },
+      {
+        "src": "assets/meal-takeout.jpg",
+        "width": 540,
+        "height": 720,
+        "tag": "外食",
+        "caption": "外帶波奇碗，外食照樣能吃。",
+        "alt": "外帶波奇碗"
+      },
+      {
+        "src": "assets/meal-dessert.jpg",
+        "width": 405,
+        "height": 720,
+        "tag": "甜點",
+        "caption": "優格香蕉配可可片，甜點照樣吃。",
+        "alt": "優格香蕉可可片甜點"
+      }
+    ]
+  },
+  "method": {
+    "kicker": "BUILT_FOR // HIGH-LOAD ENGINEERS",
+    "title": "專為高工時、高壓工程師設計",
+    "intro": "多數減肥內容預設你朝九晚五、下班有空、週末能備餐。科學園區的現實是加班、輪班、on-call、專案趕線，還有一場接一場的聚餐。這套系統從你的工時和壓力開始設計。",
+    "compare": {
+      "title": "差在哪裡",
+      "keyHeader": "項目",
+      "colA": "一般減肥做法",
+      "colB": "Fu System",
+      "rows": [
+        {
+          "k": "前提",
+          "a": "你有時間、有體力、作息穩定",
+          "b": "預設你會加班、會累、下班決策力歸零"
+        },
+        {
+          "k": "飲食",
+          "a": "少吃、算熱量、戒甜點戒酒",
+          "b": "大量大體積，吃得飽，甜點和聚餐排進系統"
+        },
+        {
+          "k": "運動",
+          "a": "每週固定上健身房",
+          "b": "漸進式徒手訓練，在家或出差飯店就能練"
+        },
+        {
+          "k": "忙碌週",
+          "a": "計畫中斷，等有空再重來",
+          "b": "切換低耗能模式，降量不停機"
+        },
+        {
+          "k": "目標",
+          "a": "在期限內瘦下來",
+          "b": "瘦下來之後，維持不再綁住生活"
+        }
+      ]
+    },
+    "itemsTitle": "五個設計重點",
+    "hitsLabel": "對應阻力：",
+    "yourTop": "你的最大阻力",
+    "items": [
+      {
+        "title": "低阻力的大體積飲食",
+        "text": "吃得多、吃得飽，飽足感先顧好。壓力大的日子，也不用跟嘴饞硬拚。",
+        "hits": [
+          "E"
+        ]
+      },
+      {
+        "title": "漸進式徒手訓練",
+        "text": "兩張椅子、一塊地板就是器材，從 10 分鐘開始，依你的體力逐步加量。加班週降量，進度不歸零。",
+        "hits": [
+          "P",
+          "U"
+        ]
+      },
+      {
+        "title": "批次備餐",
+        "text": "一次動手，好幾餐受益。煮飯和洗碗的次數降下來，下班後的體力留給自己。",
+        "hits": [
+          "P"
+        ]
+      },
+      {
+        "title": "照工時排的預設菜單",
+        "text": "加班日、聚餐日、壓力日各有預設答案。下班後不用再做決定，面對邀約也有現成做法。",
+        "hits": [
+          "D",
+          "S"
+        ]
+      },
+      {
+        "title": "像追專案一樣追體態",
+        "text": "每週看數字、調參數，知道自己走在對的路上，不用再憑感覺猜。",
+        "hits": [
+          "U"
+        ]
+      }
+    ],
+    "closing": "事業照顧好，身材同步維持。讓你走出一直要向身材妥協的生活。"
+  },
+  "cta": {
+    "high": {
+      "kicker": "NEXT_STEP",
+      "lead": "帶著這張阻力地圖來，我們直接從你最大的阻力開始拆。",
+      "button": "預約 45－50 分鐘診斷電話"
+    },
+    "low": {
+      "kicker": "NEXT_STEP",
+      "question": "是什麼讓你停在這個分數，沒有給 10 分？",
+      "options": [
+        {
+          "label": "時間排不出來",
+          "reply": "懂，高工時最缺的就是時間。私訊不用排時間，你有空再回就好。"
+        },
+        {
+          "label": "預算要再想想",
+          "reply": "合理。先私訊把你的狀況講清楚，值不值得之後再決定。"
+        },
+        {
+          "label": "怕又失敗一次",
+          "reply": "試過很多次的人都會這樣想。反覆復胖來自系統，意志力沒有問題，私訊我，先看你的系統卡在哪。"
+        },
+        {
+          "label": "還想再觀望",
+          "reply": "沒問題。想問什麼都可以先私訊，不用急著決定。"
+        }
+      ],
+      "dmTitle": "私訊我關鍵字：{keyword}",
+      "dmDesc": "我會對照你的阻力地圖回你。",
+      "dmButton": "打開 IG 私訊",
+      "copyButton": "複製關鍵字",
+      "copied": "已複製"
+    }
+  },
+  "follow": {
+    "kicker": "FOLLOW",
+    "title": "還想多看一點？先跟著我",
+    "desc": "IG 分享我每天怎麼吃、怎麼備餐；Skool 社群可以跟一群同樣在調整生活的人一起走。",
+    "links": [
+      {
+        "label": "追蹤 IG",
+        "sub": "@kmf_kuo",
+        "url": "https://www.instagram.com/kmf_kuo/",
+        "icon": "assets/icon-instagram.svg",
+        "iconWidth": 28
+      },
+      {
+        "label": "加入 Skool 社群",
+        "sub": "Fu System",
+        "url": "https://www.skool.com/fu-system-3607",
+        "icon": "assets/icon-skool.svg",
+        "iconWidth": 80
+      }
+    ]
+  },
+  "lead": {
+    "kicker": "FREE // YOUR_MAP",
+    "title": "免費索取屬於你的專屬減肥阻力地圖，即刻行動",
+    "desc": "留下聯絡方式，我會把你的阻力地圖和對應的行動清單傳給你。",
+    "fields": [
+      {
+        "id": "ig",
+        "label": "IG 帳號",
+        "placeholder": "@your_ig",
+        "type": "text",
+        "autocomplete": "off",
+        "required": true
+      },
+      {
+        "id": "email",
+        "label": "Email",
+        "placeholder": "you@example.com",
+        "type": "email",
+        "autocomplete": "email",
+        "inputmode": "email",
+        "required": true
+      },
+      {
+        "id": "line",
+        "label": "LINE ID",
+        "placeholder": "你的 LINE ID",
+        "type": "text",
+        "autocomplete": "off",
+        "required": true
+      }
+    ],
+    "submit": "免費索取我的阻力地圖",
+    "privacy": "資料只用來傳送你的阻力地圖和後續資訊，不會外流。",
+    "errors": {
+      "required": "{label} 還沒填。",
+      "email": "Email 格式好像不太對，再檢查一下。"
+    },
+    "done": "已收到，你的專屬阻力地圖會傳到你留下的聯絡方式。"
+  }
+}
