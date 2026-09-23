@@ -253,7 +253,7 @@
         h('p', { class: 'intro-desc', text: t.desc }),
         h('ul', { class: 'specs' }, t.specs.map(function (x) { return h('li', { text: x }); })),
         h('p', { class: 'muted small', text: t.note }),
-        h('button', { class: 'btn btn-primary btn-block', type: 'button', onclick: start, text: t.start })
+        cta(h('button', { class: 'btn btn-primary btn-block', type: 'button', onclick: start, text: t.start }))
       ])
     ]);
   }
@@ -401,7 +401,7 @@
         h('div', { class: 'scale10-legend muted small', 'aria-hidden': 'true' }, [
           h('span', { text: t.minLabel }), h('span', { text: t.maxLabel })
         ]),
-        submit
+        cta(submit)
       ])
     ]);
   }
@@ -624,6 +624,15 @@
   }
 
   // Images load only when near the viewport, so photos never compete with the first paint.
+  // Primary calls to action get a pulsing glow plus ripples that expand on hover.
+  function cta(el) {
+    return h('div', { class: 'cta-wrap' }, [
+      h('span', { class: 'ripple ripple-1', 'aria-hidden': 'true' }),
+      h('span', { class: 'ripple ripple-2', 'aria-hidden': 'true' }),
+      el
+    ]);
+  }
+
   function img(item, cls) {
     var el = h('img', {
       class: cls, alt: item.alt, width: item.width, height: item.height, decoding: 'async',
@@ -757,10 +766,10 @@
       return h('section', { class: 'card card-cta' }, [
         h('p', { class: 'kicker', text: hi.kicker }),
         h('p', { class: 'cta-lead', text: hi.lead }),
-        h('a', {
+        cta(h('a', {
           class: 'btn btn-primary btn-block', href: DATA.config.calendlyUrl,
           target: '_blank', rel: 'noopener', text: hi.button
-        })
+        }))
       ]);
     }
     var lo = DATA.cta.low;
@@ -872,7 +881,7 @@
       }
     }, [
       rows,
-      h('button', { class: 'btn btn-primary btn-block', type: 'submit', text: t.submit }),
+      cta(h('button', { class: 'btn btn-primary btn-block', type: 'submit', text: t.submit })),
       h('p', { class: 'muted small', text: t.privacy }),
       msg
     ]);

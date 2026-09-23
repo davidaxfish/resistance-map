@@ -530,6 +530,65 @@ h1, h2, p, ul, ol, dl, dd { margin: 0; }
   .intro { padding-top: 14vh; }
 }
 
+/* ---------- call to action: pulse + ripples ---------- */
+
+.cta-wrap {
+  position: relative;
+  display: block;
+  isolation: isolate;
+}
+.cta-wrap::before {
+  content: "";
+  position: absolute;
+  inset: -20px -12px;
+  z-index: -1;
+  border-radius: 999px;
+  background: radial-gradient(60% 120% at 50% 50%, var(--gold-glow), transparent 70%);
+  opacity: 0.45;
+  animation: cta-halo 2.6s ease-in-out infinite;
+  pointer-events: none;
+}
+.cta-wrap .ripple {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: var(--radius);
+  border: 1px solid var(--accent);
+  box-shadow: 0 0 14px var(--gold-glow);
+  opacity: 0;
+  pointer-events: none;
+}
+.cta-wrap:hover .ripple,
+.cta-wrap:focus-within .ripple { animation: ripple-out 1.9s ease-out infinite; }
+.cta-wrap:hover .ripple-2,
+.cta-wrap:focus-within .ripple-2 { animation-delay: 0.95s; }
+.cta-wrap:hover::before,
+.cta-wrap:focus-within::before { opacity: 0.85; }
+
+/* Touch devices never hover, so the ripples run on their own there. */
+@media (hover: none) {
+  .cta-wrap .ripple { animation: ripple-out 2.6s ease-out infinite; }
+  .cta-wrap .ripple-2 { animation-delay: 1.3s; }
+}
+
+@keyframes ripple-out {
+  0% { transform: scale(1); opacity: 0.65; }
+  70% { opacity: 0.14; }
+  100% { transform: scale(1.055, 1.5); opacity: 0; }
+}
+@keyframes cta-halo {
+  0%, 100% { opacity: 0.35; transform: scale(0.96); }
+  50% { opacity: 0.7; transform: scale(1.02); }
+}
+@keyframes cta-flicker {
+  0%, 100% { box-shadow: 0 2px 0 rgba(180, 130, 30, 0.9), 0 0 18px var(--gold-glow); filter: brightness(1); }
+  50% { box-shadow: 0 2px 0 rgba(180, 130, 30, 0.9), 0 0 38px rgba(255, 194, 75, 0.45); filter: brightness(1.07); }
+}
+.cta-wrap .btn-primary { animation: cta-flicker 2.2s ease-in-out infinite; }
+.cta-wrap .btn-primary:disabled { animation: none; }
+.cta-wrap:has(.btn-primary:disabled)::before,
+.cta-wrap:has(.btn-primary:disabled) .ripple { display: none; }
+
 /* ---------- audio toggle ---------- */
 
 .audio-toggle {
