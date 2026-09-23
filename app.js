@@ -973,6 +973,11 @@
       onclick: function () { setAudio(!audio.on, true); }
     }, [bars, h('span', { class: 'audio-label', text: cfg.short })]);
     document.body.appendChild(audio.btn);
+
+    // Hide the control when the track is missing (for example before a licensed file is added).
+    fetch(cfg.src, { method: 'HEAD' })
+      .then(function (r) { if (!r.ok) removeAudio(); })
+      .catch(removeAudio);
   }
 
   function removeAudio() {
