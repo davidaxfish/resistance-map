@@ -243,6 +243,10 @@
     var t = DATA.ui.intro;
     mount([
       h('section', { class: 'screen intro' }, [
+        t.logo ? h('img', {
+          class: 'brand-logo', src: t.logo.src, alt: t.logo.alt,
+          width: t.logo.width, height: t.logo.height, fetchpriority: 'high'
+        }) : null,
         h('p', { class: 'kicker', text: t.kicker }),
         h('h1', { class: 'intro-title grad', tabindex: '-1', 'data-focus': true, text: t.title }),
         h('p', { class: 'intro-sub', text: t.subtitle }),
@@ -609,6 +613,10 @@
         renderCta(),
         renderLead(),
         renderFollow(),
+        t.signoff ? h('img', {
+          class: 'signoff-logo', src: t.signoff.src, alt: t.signoff.alt,
+          width: t.signoff.width, height: t.signoff.height, loading: 'lazy'
+        }) : null,
         h('p', { class: 'muted small center share', text: t.shareHint }),
         h('button', { class: 'btn btn-outline btn-block', type: 'button', onclick: start, text: t.restart })
       ])

@@ -98,7 +98,21 @@ h1, h2, p, ul, ol, dl, dd { margin: 0; }
 .screen { animation: fade-in 240ms ease-out both; }
 @keyframes fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-.intro { padding-top: 12vh; }
+.intro { padding-top: 9vh; }
+.brand-logo {
+  display: block;
+  width: 108px;
+  height: auto;
+  margin-bottom: 22px;
+  filter: drop-shadow(0 0 20px rgba(255, 194, 75, 0.22));
+}
+.signoff-logo {
+  display: block;
+  width: 64px;
+  height: auto;
+  margin: 26px auto 4px;
+  opacity: 0.55;
+}
 .intro-title {
   font-family: var(--font-serif);
   filter: drop-shadow(0 0 22px var(--gold-glow));

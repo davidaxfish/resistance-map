@@ -36,7 +36,13 @@
         "免登入"
       ],
       "note": "照最近一個月的真實狀況選，第一個直覺通常最準。",
-      "start": "開始測驗"
+      "start": "開始測驗",
+      "logo": {
+        "src": "assets/logo-wordmark.png",
+        "width": 497,
+        "height": 439,
+        "alt": "Fu System"
+      }
     },
     "nav": {
       "back": "上一題",
@@ -91,6 +97,12 @@
         "top": "TOP_RESISTANCE // {code}",
         "actions": "ACTIONS // {code}",
         "gap": "GAP"
+      },
+      "signoff": {
+        "src": "assets/logo-mark.png",
+        "width": 308,
+        "height": 326,
+        "alt": "Fu System"
       }
     }
   },
