@@ -103,14 +103,33 @@ node tests/copy-check.js
 
 ## 4. 名單進 Google Sheet
 
-目前使用 **B. Make.com**：
+**目前已經接好，用 Make.com（已上線運作）**
+
 - Webhook：`https://hook.us2.make.com/jehbyi9j3rhylxi863nh3ji3u35u6h1b`（已填入 `config.webhookUrl`，`webhookMode: json`）
-- Scenario「阻力地圖_名單寫入 Google Sheet」→ 試算表 `1wXxJfsGi8Z4I9pGchprrsSQdXHKIbMudT7yNTwDIFCs`
-- Scenario 啟用前，Make 會把最多 50 筆請求排隊保存，啟用後補寫。
+- Make Scenario：`阻力地圖_名單寫入 Google Sheet`（ID 6373415，Immediately，已啟用）
+- Google 連線：`Google Sheets - 阻力地圖名單`（ID 11262690）
+- 試算表：`1wXxJfsGi8Z4I9pGchprrsSQdXHKIbMudT7yNTwDIFCs`，兩個分頁：
 
-A 是不用 Make 的備案。
+| 分頁 | 內容 |
+|---|---|
+| `leads` | 原始紀錄，每個事件一列（A 到 Y 共 25 欄），Make 用 Sheets API append 寫入 |
+| `名單` | 追銷用。A2 一條公式把 `leads` 去重，每個 sessionId 只留最新一列（通常就是留了 IG 和 Email 的那筆） |
 
-### A. Google Apps Script（最簡單，免費）
+`名單!A2` 的公式：
+
+```
+=IFERROR(SORTN(SORT(INDIRECT("leads!A2:Y"), 3, FALSE), 9^9, 2, 1, TRUE), "")
+```
+
+用 `INDIRECT` 是因為直接寫 `leads!A2:Y` 會在寫入新列時被 Google Sheets 位移。append 也設成 `insertDataOption=OVERWRITE`，同樣是避免位移。`receivedAt` 帶到秒，讓同一個人的 `lead` 事件排在 `complete` 之後。
+
+要改欄位時，`leads!A1:Y1` 的標題、`名單!A1:Y1` 的標題，以及 Scenario 第 2 個模組 body 裡的 25 個值要一起改。
+
+Make 免費方案同時只能啟用一個 Scenario，要跑其他流程時記得檢查這支有沒有被關掉。
+
+---
+
+### 備案 A：Google Apps Script（不用 Make 時才需要）
 
 1. 新建一個 Google 試算表，命名例如「阻力地圖名單」。
 2. 擴充功能 → Apps Script，把 `google-apps-script.gs` 全部貼上，存檔。
@@ -132,7 +151,7 @@ A 是不用 Make 的備案。
 
 > 改過 Apps Script 程式碼後要「管理部署作業 → 編輯 → 新版本」，網址不變。
 
-### B. Make.com
+### 備案 B：自己重建 Make 流程
 
 1. Make 新增 Scenario → 第一個模組 `Webhooks > Custom webhook`，複製網址貼到 `config.webhookUrl`。
 2. `webhookMode`：
