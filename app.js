@@ -244,7 +244,7 @@
     mount([
       h('section', { class: 'screen intro' }, [
         h('p', { class: 'kicker', text: t.kicker }),
-        h('h1', { class: 'intro-title', tabindex: '-1', 'data-focus': true, text: t.title }),
+        h('h1', { class: 'intro-title grad', tabindex: '-1', 'data-focus': true, text: t.title }),
         h('p', { class: 'intro-sub', text: t.subtitle }),
         h('p', { class: 'intro-desc', text: t.desc }),
         h('ul', { class: 'specs' }, t.specs.map(function (x) { return h('li', { text: x }); })),
@@ -255,6 +255,8 @@
   }
 
   function start() {
+    var cfg = DATA.config.audio;
+    if (cfg && cfg.autoStart && !audio.on) setAudio(true);
     state = newState();
     setHash('');
     renderStep();
@@ -451,6 +453,17 @@
 
     var svg = s('svg', { viewBox: '0 0 ' + W + ' ' + H, class: 'radar', role: 'img', 'aria-label': aria });
 
+    var stops = function (id, coords) {
+      return s('linearGradient', {
+        id: id, x1: coords[0], y1: coords[1], x2: coords[2], y2: coords[3], gradientUnits: 'objectBoundingBox'
+      }, [
+        s('stop', { offset: '0', 'stop-color': '#EFFF8A' }),
+        s('stop', { offset: '0.45', 'stop-color': '#E4FF6E' }),
+        s('stop', { offset: '1', 'stop-color': '#F59A23' })
+      ]);
+    };
+    svg.appendChild(s('defs', {}, [stops('rmStroke', [0, 0, 1, 1]), stops('rmFill', [0, 0, 0.6, 1])]));
+
     var grid = s('g', { class: 'radar-grid' });
     [0.25, 0.5, 0.75, 1].forEach(function (f) {
       grid.appendChild(s('polygon', { points: poly(R * f), class: f === 1 ? 'grid-outer' : 'grid-ring' }));
@@ -581,7 +594,7 @@
     mount([
       h('section', { class: 'screen result' }, [
         h('p', { class: 'kicker', text: t.kicker }),
-        h('h1', { class: 'result-title', tabindex: '-1', 'data-focus': true, text: t.title }),
+        h('h1', { class: 'result-title grad', tabindex: '-1', 'data-focus': true, text: t.title }),
         h('div', { class: 'card radar-card' }, [
           renderRadar(res),
           h('p', { class: 'muted small center', text: t.radarCaption })
@@ -941,6 +954,49 @@
     if (btn) btn.click();
   });
 
+  /* ---------- background audio ---------- */
+
+  var audio = { el: null, btn: null, on: false };
+
+  function initAudio() {
+    var cfg = DATA.config.audio;
+    if (!cfg || !cfg.src) return;
+    audio.el = new Audio(cfg.src);
+    audio.el.loop = cfg.loop !== false;
+    audio.el.volume = typeof cfg.volume === 'number' ? cfg.volume : 0.35;
+    audio.el.preload = 'none';
+    audio.el.addEventListener('error', removeAudio);
+
+    var bars = h('span', { class: 'audio-bars', 'aria-hidden': 'true' }, [h('i'), h('i'), h('i')]);
+    audio.btn = h('button', {
+      class: 'audio-toggle', type: 'button', 'aria-pressed': 'false', 'aria-label': cfg.labelOff,
+      onclick: function () { setAudio(!audio.on, true); }
+    }, [bars, h('span', { class: 'audio-label', text: cfg.short })]);
+    document.body.appendChild(audio.btn);
+  }
+
+  function removeAudio() {
+    if (audio.btn && audio.btn.parentNode) audio.btn.parentNode.removeChild(audio.btn);
+    audio.el = null;
+    audio.btn = null;
+    audio.on = false;
+  }
+
+  // Playback needs a user gesture, so this is only ever called from a click.
+  function setAudio(on, explicit) {
+    if (!audio.el) return;
+    var cfg = DATA.config.audio;
+    if (on) {
+      var p = audio.el.play();
+      if (p && p.catch) p.catch(function () { if (!explicit) setAudio(false); });
+    } else {
+      audio.el.pause();
+    }
+    audio.on = on;
+    audio.btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    audio.btn.setAttribute('aria-label', on ? cfg.labelOn : cfg.labelOff);
+  }
+
   /* ---------- boot ---------- */
 
   function applyMeta() {
@@ -954,6 +1010,7 @@
     .then(function (json) {
       DATA = json;
       applyMeta();
+      initAudio();
       if (!restoreFromHash()) renderIntro();
       window.addEventListener('hashchange', function () {
         if (!restoreFromHash()) renderIntro();

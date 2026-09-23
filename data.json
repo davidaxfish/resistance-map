@@ -9,7 +9,16 @@
     "lowResistanceMaxPercent": 33,
     "loadingMs": 1500,
     "loadingStepMs": 500,
-    "autoAdvanceMs": 180
+    "autoAdvanceMs": 180,
+    "audio": {
+      "src": "assets/theme.mp3",
+      "volume": 0.32,
+      "loop": true,
+      "autoStart": true,
+      "short": "配樂",
+      "labelOn": "關閉配樂",
+      "labelOff": "開啟配樂"
+    }
   },
   "meta": {
     "title": "阻力地圖｜3 分鐘找出你瘦不下來的最大阻力",
@@ -20,7 +29,7 @@
       "kicker": "FU SYSTEM // RESISTANCE_MAP v1",
       "title": "阻力地圖",
       "subtitle": "3 分鐘找出你瘦不下來的最大阻力",
-      "desc": "專為高工時工程師設計，共 17 題，結果會畫成你的阻力雷達圖。",
+      "desc": "專為高忙碌的你設計，越忙，這份結果將越有價值，共 17 題，結果能讓你在生活中達到身材自由。",
       "specs": [
         "17 題",
         "約 3 分鐘",
@@ -43,9 +52,9 @@
     },
     "commitment": {
       "kicker": "PRIORITY_CHECK",
-      "question": "1 到 10 分，把這個阻力解決掉，對你現在的優先順序有多高？",
-      "minLabel": "1　還好",
-      "maxLabel": "10　現在最重要",
+      "question": "1 到 10 分，把這個阻力解決掉，對你現在的優先順序有多高？（1 是你完全不想做，10 是它將成為你當前生活的主線任務之一）",
+      "minLabel": "1　完全不想做",
+      "maxLabel": "10　主線任務",
       "submit": "畫出我的阻力地圖",
       "groupLabel": "優先順序分數"
     },
@@ -306,23 +315,23 @@
     },
     "U1": {
       "resistance": "U",
-      "text": "我不確定哪一種方法適合我的生活，怕又白做一次。"
+      "text": "我試過的方法都要規律作息，我的班表和加班到前一週才知道，不確定哪一種排得進我的生活。"
     },
     "D2": {
       "resistance": "D",
-      "text": "站在超商或餐廳的菜單前，我常常猶豫很久，最後隨便選一個。"
+      "text": "公司附近能吃的就那幾家，我常常站在那裡猶豫很久，最後隨便選一個。"
     },
     "P2": {
       "resistance": "P",
-      "text": "備餐、煮飯、洗碗這些事，會讓我直接選最快的外食。"
+      "text": "自己帶便當太麻煩，想到煮飯加洗碗，我還是選了最快的外食。"
     },
     "S2": {
       "resistance": "S",
-      "text": "同事、家人、朋友的邀約，會讓我覺得控制飲食很尷尬。"
+      "text": "同事揪下午茶、團購手搖，我幾乎都會跟。"
     },
     "E2": {
       "resistance": "E",
-      "text": "下班後我會覺得「今天這麼累，吃點東西是應該的」。"
+      "text": "上班很累的日子，我會想放鬆一下，然後點了宵夜或手搖。"
     },
     "U2": {
       "resistance": "U",
@@ -336,7 +345,7 @@
     "P3": {
       "resistance": "P",
       "impact": true,
-      "text": "我知道該運動，但一想到要換衣服出門，就決定明天再說。"
+      "text": "我知道該動一下，但通勤回到家已經很晚，換衣服出門這件事就讓我決定明天再說。"
     },
     "S3": {
       "resistance": "S",
@@ -575,7 +584,7 @@
   "lead": {
     "kicker": "FREE // YOUR_MAP",
     "title": "免費索取屬於你的專屬減肥阻力地圖，即刻行動",
-    "desc": "留下聯絡方式，我會把你的阻力地圖和對應的行動清單傳給你。",
+    "desc": "留下 IG 和 Email，我會把你的阻力地圖和對應的行動清單傳給你。",
     "fields": [
       {
         "id": "ig",
@@ -592,14 +601,6 @@
         "type": "email",
         "autocomplete": "email",
         "inputmode": "email",
-        "required": true
-      },
-      {
-        "id": "line",
-        "label": "LINE ID",
-        "placeholder": "你的 LINE ID",
-        "type": "text",
-        "autocomplete": "off",
         "required": true
       }
     ],

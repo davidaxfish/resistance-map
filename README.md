@@ -61,6 +61,7 @@ node tests/copy-check.js
 | `config.webhookMode` | `simple`（預設，Apps Script 與 Make 都能收）或 `json` |
 | `config.igDmUrl` | IG 私訊連結，例如 `https://ig.me/m/你的帳號`。留空時只顯示關鍵字和「複製關鍵字」按鈕 |
 | `config.dmKeyword` | 私訊關鍵字（目前是「系統」） |
+| `config.audio` | 配樂檔路徑、音量、開關文案。`src` 留空就不顯示配樂按鈕 |
 | `config.commitmentThreshold` | 幾分以上顯示預約按鈕（目前 9） |
 | `config.lowResistanceMaxPercent` | 全部阻力 ≤ 此百分比時顯示低阻力型（目前 33，也就是每項 3/9 分以下） |
 | `meta` | 瀏覽器分頁標題與描述 |
@@ -125,7 +126,7 @@ A 是不用 Make 的備案。
 |---|---|
 | `complete` | 看到結果頁的那一刻 |
 | `reason` | 承諾度 ≤ 8 的人選了「沒給 10 分的原因」 |
-| `lead` | 送出 IG／Email／LINE |
+| `lead` | 送出 IG／Email |
 
 最後一欄 `followUpStatus` 留給你手動標註追銷進度，程式不會覆蓋。
 
@@ -157,7 +158,6 @@ A 是不用 Make 的備案。
   "reasonNot10": "怕又失敗一次",
   "ig": "@someone",
   "email": "someone@example.com",
-  "line": "someone_line",
   "resultUrl": "https://davidaxfish.github.io/resistance-map/#r=D6-P7-S2-E9-U4&k=12330&c=7",
   "topResistanceName": "情緒代償",
   "completedAt": "2026-09-21T13:10:35.129Z",
@@ -168,7 +168,7 @@ A 是不用 Make 的備案。
 }
 ```
 
-`ig` `email` `line` 來自結果頁的「免費索取」表單（三欄必填，可在 `data.json` 的 `lead.fields[].required` 改）；`resultUrl` 可以直接點開對方的阻力地圖；`sessionId` `event` `ctaBranch` `isLow` 用於 Sheet 去重與分流追銷。
+`ig` `email` `line` 來自結果頁的「免費索取」表單（兩欄必填，可在 `data.json` 的 `lead.fields` 增減欄位或改 `required`）；`resultUrl` 可以直接點開對方的阻力地圖；`sessionId` `event` `ctaBranch` `isLow` 用於 Sheet 去重與分流追銷。
 
 ---
 
@@ -190,8 +190,11 @@ A 是不用 Make 的備案。
 
 ## 6. 設計備註
 
-- 字體：JetBrains Mono（英數）＋ Noto Serif TC 思源宋體（中文），從 Google Fonts 非同步載入，失敗時退回系統宋體與等寬字。
-  這是 webhook 留空時唯一的對外請求（GET 字型）。如果要完全零外部請求，把字型檔下載後自架，改 index.html 的字型連結即可。
+- 字體：英數用 JetBrains Mono（Google Fonts 非同步載入），中文用系統宋體（iOS 與 macOS 是 Songti TC，Android 是 Noto Serif CJK，Windows 是 MingLiU）。
+  中文字型從 Google Fonts 載入要多下載約 1.5MB，手機版 Lighthouse 分數會掉到 60 左右，所以改用系統字型。
+- 視覺：螢光黃到琥珀金的漸層（`--grad`），卡片頂端細光線、雷達圖漸層描邊與光暈、CTA 呼吸光暈、主按鈕掃光。全部在 `style.css` 的 `:root` 調色。
+- 配樂：`config.audio`。`src` 指到音檔，右上角會出現配樂開關，按「開始測驗」時自動播放（瀏覽器規定要有使用者操作才能播）。
+  `src` 留空或檔案不存在時，開關會自動消失。**放上線的音檔需要有授權**，商用授權可用 Epidemic Sound、Artlist，免費可用 YouTube Audio Library、Pixabay Music。
 - 支援 `prefers-reduced-motion`：雷達圖展開、光暈、過場動畫全部關閉。
 - 選項可用鍵盤數字 1 到 4 作答。
 
