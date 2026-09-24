@@ -613,6 +613,7 @@
         renderCta(),
         renderLead(),
         renderFollow(),
+        renderShare(),
         t.signoff ? h('img', {
           class: 'signoff-logo', src: t.signoff.src, alt: t.signoff.alt,
           width: t.signoff.width, height: t.signoff.height, loading: 'lazy'
@@ -737,6 +738,42 @@
           ];
         }))
       ])
+    ]);
+  }
+
+  function quizBaseUrl() {
+    return location.origin + location.pathname;
+  }
+
+  function renderShare() {
+    var t = DATA.ui.result.share;
+    if (!t) return null;
+    var url = quizBaseUrl();
+    var msg = h('p', { class: 'form-msg small', role: 'status' });
+    var copyBtn = h('button', {
+      class: 'btn btn-outline btn-block', type: 'button', text: t.copyButton,
+      onclick: function () {
+        var done = function (ok) { msg.textContent = ok ? t.copied : url; msg.className = 'form-msg small accent'; };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(function () { done(true); }, function () { done(false); });
+        } else done(false);
+      }
+    });
+    var buttons = [copyBtn];
+    if (navigator.share) {
+      buttons.push(h('button', {
+        class: 'btn btn-primary btn-block', type: 'button', text: t.shareButton,
+        onclick: function () {
+          navigator.share({ title: DATA.meta.title, text: t.shareText, url: url }).catch(function () {});
+        }
+      }));
+    }
+    return h('section', { class: 'card' }, [
+      h('p', { class: 'kicker', text: t.kicker }),
+      h('h2', { class: 'card-title', text: t.title }),
+      h('p', { class: 'muted small', text: t.desc }),
+      h('div', { class: 'share-actions' }, buttons),
+      msg
     ]);
   }
 

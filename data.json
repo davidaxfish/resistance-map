@@ -103,6 +103,15 @@
         "width": 308,
         "height": 326,
         "alt": "Fu System"
+      },
+      "share": {
+        "kicker": "SHARE",
+        "title": "分享這份測驗給朋友",
+        "desc": "朋友點進去是全新的測驗，不會看到你的答案或結果。",
+        "copyButton": "複製測驗連結",
+        "copied": "已複製",
+        "shareButton": "分享給朋友",
+        "shareText": "3 分鐘找出你瘦不下來的最大阻力，我剛測完，你也試試看："
       }
     }
   },

@@ -454,6 +454,7 @@ h1, h2, p, ul, ol, dl, dd { margin: 0; }
 .lead-form input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 1px var(--accent); }
 .lead-form .btn { margin-top: 12px; }
 .form-msg { min-height: 1.6em; }
+.share-actions { display: grid; gap: 10px; margin-top: 6px; }
 
 .share { padding-top: 8px; }
 
