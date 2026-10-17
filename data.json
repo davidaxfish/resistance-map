@@ -18,7 +18,8 @@
       "short": "配樂",
       "labelOn": "關閉配樂",
       "labelOff": "開啟配樂"
-    }
+    },
+    "emailEndpoint": ""
   },
   "meta": {
     "title": "阻力地圖｜3 分鐘找出你瘦不下來的最大阻力",
@@ -62,7 +63,22 @@
       "minLabel": "1　完全不想做",
       "maxLabel": "10　主線任務",
       "submit": "畫出我的阻力地圖",
-      "groupLabel": "優先順序分數"
+      "groupLabel": "優先順序分數",
+      "gate": {
+        "title": "最後一步，留下你的稱呼和信箱",
+        "desc": "填好就能看到你的阻力地圖。",
+        "emailNote": "同時會寄一份到你的信箱，之後想看隨時翻信就有。",
+        "nameLabel": "你的稱呼",
+        "namePlaceholder": "暱稱或匿名都可以",
+        "emailLabel": "Email",
+        "emailPlaceholder": "you@example.com",
+        "privacy": "只用來寄送你的阻力地圖和後續資訊，不會外流，也可以隨時回信退訂。",
+        "hint": "選好分數，再填好稱呼和 Email，就能看結果。",
+        "errors": {
+          "required": "{label} 還沒填。",
+          "email": "Email 格式好像不太對，再檢查一下。"
+        }
+      }
     },
     "loading": {
       "kicker": "PROCESSING",
@@ -596,41 +612,35 @@
       {
         "label": "加入 Skool 社群",
         "sub": "Fu System",
-        "url": "https://www.skool.com/fu-system-3607",
+        "url": "https://www.skool.com/fu-system-3607/about",
         "icon": "assets/icon-skool.svg",
         "iconWidth": 80
       }
     ]
   },
-  "lead": {
-    "kicker": "FREE // YOUR_MAP",
-    "title": "免費索取屬於你的專屬減肥阻力地圖，即刻行動",
-    "desc": "留下 IG 和 Email，我會把你的阻力地圖和對應的行動清單傳給你。",
-    "fields": [
-      {
-        "id": "ig",
-        "label": "IG 帳號",
-        "placeholder": "@your_ig",
-        "type": "text",
-        "autocomplete": "off",
-        "required": true
-      },
-      {
-        "id": "email",
-        "label": "Email",
-        "placeholder": "you@example.com",
-        "type": "email",
-        "autocomplete": "email",
-        "inputmode": "email",
-        "required": true
-      }
+  "email": {
+    "fromName": "Fu System",
+    "subject": "{name}，你的阻力地圖在這裡",
+    "preheader": "做完這 17 題，你已經比多數人更靠近答案。",
+    "greeting": "嗨 {name}，",
+    "intro": "謝謝你花 3 分鐘把這份測驗做完。你的阻力地圖我幫你整理好了，放在下面，隨時可以回來看。",
+    "resultTitle": "你的阻力地圖",
+    "topLead": "影響你生活最多的阻力是：",
+    "actionsTitle": "今天就能做的 3 件事",
+    "actionsLead": "不用全做，挑一件，今天做完就好。",
+    "viewOnline": "在網頁上看完整雷達圖",
+    "encourage": [
+      "反覆復胖來自生活裡的系統，意志力沒有問題。",
+      "你願意停下來把自己的阻力找出來，就已經走在對的方向上了。"
     ],
-    "submit": "免費索取我的阻力地圖",
-    "privacy": "資料只用來傳送你的阻力地圖和後續資訊，不會外流。",
-    "errors": {
-      "required": "{label} 還沒填。",
-      "email": "Email 格式好像不太對，再檢查一下。"
-    },
-    "done": "已收到，你的專屬阻力地圖會傳到你留下的聯絡方式。"
+    "ctaTitle": "想把這張地圖變成你的行動計畫？",
+    "ctaLead": "帶著這張阻力地圖來，我們直接從你最大的阻力開始拆。",
+    "bookLabel": "預約 45－50 分鐘 1on1 診斷電話",
+    "moreTitle": "還想多看一點？",
+    "skoolLabel": "加入 Skool 社群",
+    "igLabel": "追蹤 IG @kmf_kuo",
+    "signoff": "替你加油，",
+    "signName": "Fu System",
+    "footer": "這封信是因為你在阻力地圖測驗留下信箱才寄出。不想再收到後續資訊，直接回信跟我說一聲就好。"
   }
 }

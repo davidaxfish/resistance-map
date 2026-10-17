@@ -10,10 +10,12 @@ resistance-map/
 ├─ style.css               視覺 token 與版面
 ├─ app.js                  流程、計分、SVG 雷達圖、hash 還原、webhook
 ├─ data.json               唯一資料來源（全部文案、連結、設定）
-├─ google-apps-script.gs   Google Sheet 名單表（貼到 Apps Script）
+├─ email-gateway.gs        歡迎信＋訂閱者紀錄（貼到名單試算表的 Apps Script）
+├─ google-apps-script.gs   備案：不用 Make 時的名單表
 ├─ assets/                 成果照片與餐點照片
 └─ tests/
    ├─ scoring.test.js      計分、同分規則、hash、分流測試
+   ├─ email.test.js        歡迎信：輸入驗證、內容、連結、跳脫、與網站判定一致
    └─ copy-check.js        文案規則檢查＋程式碼有沒有寫死中文
 ```
 
@@ -34,6 +36,7 @@ python3 -m http.server 8000
 
 ```bash
 node tests/scoring.test.js
+node tests/email.test.js
 node tests/copy-check.js
 ```
 
@@ -71,7 +74,10 @@ node tests/copy-check.js
 | `resistances.X` | 阻力名稱、雷達軸標籤、定義、診斷（本質／後果）、3 個行動與分鐘數 |
 | `questionOrder` | 15 題出題順序 |
 | `questions.X` | 題目文案；`"impact": true` 代表生活影響題（同分判定用） |
-| `lowType` `gap` `cta` `lead` | 低阻力型、落差說明、CTA 分流、留資表單 |
+| `lowType` `gap` `cta` | 低阻力型、落差說明、CTA 分流 |
+| `ui.commitment.gate` | 承諾度頁的「稱呼＋Email」閘門文案、錯誤訊息 |
+| `email` | 歡迎信全部文案（主旨、問候、鼓勵、預約、Skool、IG、署名、頁尾）。信件由 `email-gateway.gs` 讀這個檔案組出來 |
+| `config.emailEndpoint` | Apps Script 寄信端點（`/exec` 網址）。留空：不顯示「會寄一份」，也不送寄信請求 |
 | `proof` | 前後對比照與故事（照片放 `assets/`，`width` `height` 填原圖尺寸） |
 | `meals` | 餐點照片滑動列，每張有標籤與一句說明，可增減 |
 | `method` | 方法方向預告；`hits` 填對應的阻力代號，命中使用者最大阻力時會標「你的最大阻力」 |
@@ -175,7 +181,8 @@ Make 免費方案同時只能啟用一個 Scenario，要跑其他流程時記得
   "topResistance": "E",
   "commitment": 7,
   "reasonNot10": "怕又失敗一次",
-  "ig": "@someone",
+  "name": "小明",
+  "ig": "小明",
   "email": "someone@example.com",
   "resultUrl": "https://davidaxfish.github.io/resistance-map/#r=D6-P7-S2-E9-U4&k=12330&c=7",
   "topResistanceName": "情緒代償",
@@ -188,6 +195,40 @@ Make 免費方案同時只能啟用一個 Scenario，要跑其他流程時記得
 ```
 
 `ig` `email` `line` 來自結果頁的「免費索取」表單（兩欄必填，可在 `data.json` 的 `lead.fields` 增減欄位或改 `required`）；`resultUrl` 可以直接點開對方的阻力地圖；`sessionId` `event` `ctaBranch` `isLow` 用於 Sheet 去重與分流追銷。
+
+---
+
+## 寄信自動化（Apps Script，用 ring390@gmail.com 寄出）
+
+使用者在承諾度頁填好稱呼和 Email 後，網站會把答案送到 `config.emailEndpoint`，由 Apps Script 以 ring390@gmail.com 寄出歡迎信，並把稱呼和 Email 記到試算表的 `訂閱者` 分頁。
+這條路徑完全獨立於上面的 Make 名單寫入流程，沒有動到它。
+
+為什麼不用 Make：Make 免費方案同時只能啟用 2 個 Scenario，已經被「名單寫入」和「飲食矩陣_主場景」用滿。
+
+### 部署（一次，約 3 分鐘）
+
+1. 打開名單試算表 → 擴充功能 → Apps Script，新增一個檔案，把 `email-gateway.gs` 全部貼上，存檔。
+2. 上方函式選單選 `authorizeAndTest`，按執行。第一次會跳出授權：選 ring390@gmail.com，按「進階」→「前往（不安全）」→ 允許。
+   權限只有三項：以你的身分寄信、連外讀取 data.json、編輯這份試算表。沒有讀信的權限。
+   執行完會寄一封測試信到 ring390@gmail.com，`訂閱者` 分頁會多一列。
+3. 部署 → 新增部署作業 → 類型選「網頁應用程式」：執行身分「我」、存取權「所有人」→ 部署，複製 `/exec` 結尾的網址。
+4. 貼到 `data.json` 的 `config.emailEndpoint`，推上 GitHub。
+
+### 防濫用
+
+端點是公開的，所以：
+- 信件文案、連結、結果網址都由 Apps Script 讀線上 `data.json` 組出來，不接受瀏覽器傳來的任何文字或連結。
+- 分數、Email、稱呼都會驗證，稱呼會跳脫 HTML。
+- 同一個信箱 1 小時只寄 1 封，每天最多 80 封（Gmail 個人帳號每天上限是 100 封）。
+- 前端有隱藏欄位擋機器人。
+
+超過上限時不會寄信，但稱呼和 Email 還是會寫進 `訂閱者`，`emailStatus` 會標 `skipped_*`，方便你之後手動補寄。
+
+### `訂閱者` 分頁欄位
+
+`receivedAt` `sessionId` `name` `email` `topResistance` `topResistanceName` `D%` `P%` `S%` `E%` `U%` `commitment` `resultUrl` `emailStatus` `emailSentAt` `error` `followUpStatus`
+
+`followUpStatus` 留給你手動標追銷進度，程式不會覆蓋。
 
 ---
 

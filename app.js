@@ -361,14 +361,18 @@
     renderStep();
   }
 
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
   function renderCommitment() {
     var t = DATA.ui.commitment;
-    var submit = h('button', {
-      class: 'btn btn-primary btn-block', type: 'button',
-      disabled: state.commitment ? null : true,
-      onclick: function () { if (state.commitment) runLoading(); },
-      text: t.submit
-    });
+    var g = t.gate;
+    var msg = h('p', { class: 'form-msg small', role: 'status' });
+    var failed = function (text, el) {
+      msg.textContent = text;
+      msg.className = 'form-msg small warn';
+      if (el) { el.setAttribute('aria-invalid', 'true'); el.focus(); }
+    };
+
     var nums = [];
     for (var i = 1; i <= 10; i++) nums.push(i);
     var group = h('div', { class: 'scale10', role: 'group', 'aria-label': t.groupLabel },
@@ -386,12 +390,58 @@
             });
             e.currentTarget.classList.add('is-selected');
             e.currentTarget.setAttribute('aria-pressed', 'true');
-            submit.disabled = false;
+            msg.textContent = '';
           },
           text: String(v)
         });
       })
     );
+
+    var nameIn = h('input', {
+      id: 'gate-name', name: 'name', type: 'text', autocomplete: 'nickname',
+      maxlength: '30', placeholder: g.namePlaceholder, required: true, 'aria-required': 'true'
+    });
+    var emailIn = h('input', {
+      id: 'gate-email', name: 'email', type: 'email', autocomplete: 'email', inputmode: 'email',
+      maxlength: '120', placeholder: g.emailPlaceholder, required: true, 'aria-required': 'true'
+    });
+    // Honeypot: real people never see or fill this field.
+    var trap = h('input', {
+      class: 'hp', name: 'website', type: 'text', tabindex: '-1', autocomplete: 'off', 'aria-hidden': 'true'
+    });
+    nameIn.value = state.lead.name || '';
+    emailIn.value = state.lead.email || '';
+
+    var req = function () { return h('span', { class: 'req', 'aria-hidden': 'true', text: ' *' }); };
+    var form = h('form', {
+      class: 'gate', novalidate: true,
+      onsubmit: function (e) {
+        e.preventDefault();
+        nameIn.removeAttribute('aria-invalid');
+        emailIn.removeAttribute('aria-invalid');
+        var name = nameIn.value.trim().replace(/\s+/g, ' ');
+        var email = emailIn.value.trim();
+        if (!state.commitment) return failed(g.hint);
+        if (!name) return failed(fmt(g.errors.required, { label: g.nameLabel }), nameIn);
+        if (!email) return failed(fmt(g.errors.required, { label: g.emailLabel }), emailIn);
+        if (!EMAIL_RE.test(email)) return failed(g.errors.email, emailIn);
+        state.lead = { name: name, email: email };
+        state.bot = !!trap.value;
+        runLoading();
+      }
+    }, [
+      h('p', { class: 'kicker', text: g.title }),
+      h('p', { class: 'muted small', text: g.desc + (DATA.config.emailEndpoint ? g.emailNote : '') }),
+      h('div', { class: 'lead-form' }, [
+        h('label', { for: 'gate-name' }, [g.nameLabel, req()]), nameIn,
+        h('label', { for: 'gate-email' }, [g.emailLabel, req()]), emailIn,
+        trap
+      ]),
+      cta(h('button', { class: 'btn btn-primary btn-block', type: 'submit', text: t.submit })),
+      h('p', { class: 'muted small', text: g.privacy }),
+      msg
+    ]);
+
     mount([
       h('section', { class: 'screen commitment' }, [
         header(DATA.ui.progress.commitment, 100),
@@ -401,7 +451,7 @@
         h('div', { class: 'scale10-legend muted small', 'aria-hidden': 'true' }, [
           h('span', { text: t.minLabel }), h('span', { text: t.maxLabel })
         ]),
-        cta(submit)
+        form
       ])
     ]);
   }
@@ -429,7 +479,10 @@
     setHash(encodeHash(DATA, state.result, {
       commitment: state.commitment, goal: state.context.goal, whyNow: state.context.whyNow
     }));
-    sendWebhook('complete');
+    if (!state.bot) {
+      sendWebhook('complete');
+      sendEmail();
+    }
     renderResult();
   }
 
@@ -611,7 +664,6 @@
         renderMeals(),
         renderMethod(res),
         renderCta(),
-        renderLead(),
         renderFollow(),
         renderShare(),
         t.signoff ? h('img', {
@@ -871,65 +923,6 @@
     ]);
   }
 
-  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-  function renderLead() {
-    var t = DATA.lead;
-    var msg = h('p', { class: 'form-msg small', role: 'status' });
-    var inputs = {};
-    var rows = t.fields.map(function (f) {
-      var id = 'lead-' + f.id;
-      var input = h('input', {
-        id: id, name: f.id, type: f.type || 'text', autocomplete: f.autocomplete || 'off',
-        inputmode: f.inputmode, maxlength: '120', placeholder: f.placeholder,
-        required: f.required ? true : null, 'aria-required': f.required ? 'true' : null
-      });
-      input.value = state.lead[f.id] || '';
-      inputs[f.id] = input;
-      return [
-        h('label', { for: id }, [f.label, f.required ? h('span', { class: 'req', 'aria-hidden': 'true', text: ' *' }) : null]),
-        input
-      ];
-    });
-    var fail = function (text, input) {
-      msg.textContent = text;
-      msg.className = 'form-msg small warn';
-      if (input) { input.setAttribute('aria-invalid', 'true'); input.focus(); }
-    };
-    var form = h('form', {
-      class: 'lead-form', novalidate: true,
-      onsubmit: function (e) {
-        e.preventDefault();
-        var values = {};
-        var bad = null;
-        t.fields.forEach(function (f) {
-          var input = inputs[f.id];
-          input.removeAttribute('aria-invalid');
-          values[f.id] = input.value.trim();
-          if (bad) return;
-          if (f.required && !values[f.id]) bad = [fmt(t.errors.required, { label: f.label }), input];
-          else if (f.type === 'email' && values[f.id] && !EMAIL_RE.test(values[f.id])) bad = [t.errors.email, input];
-        });
-        if (bad) return fail(bad[0], bad[1]);
-        state.lead = values;
-        sendWebhook('lead');
-        msg.textContent = t.done;
-        msg.className = 'form-msg small accent';
-      }
-    }, [
-      rows,
-      cta(h('button', { class: 'btn btn-primary btn-block', type: 'submit', text: t.submit })),
-      h('p', { class: 'muted small', text: t.privacy }),
-      msg
-    ]);
-    return h('section', { class: 'card card-lead' }, [
-      h('p', { class: 'kicker', text: t.kicker }),
-      h('h2', { class: 'card-title', text: t.title }),
-      h('p', { class: 'muted small', text: t.desc }),
-      form
-    ]);
-  }
-
   /* ---------- webhook ---------- */
 
   function payload(event) {
@@ -947,9 +940,9 @@
       topResistance: res.top,
       commitment: state.commitment || 0,
       reasonNot10: state.reasonNot10,
-      ig: state.lead.ig || '',
+      name: state.lead.name || '',
+      ig: state.lead.name || '',
       email: state.lead.email || '',
-      line: state.lead.line || '',
       resultUrl: location.href,
       topResistanceName: DATA.resistances[res.top].name,
       completedAt: state.completedAt,
@@ -968,6 +961,27 @@
       ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body, keepalive: true }
       : { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: body, keepalive: true };
     try { fetch(url, opts).catch(function () {}); } catch (e) { /* never block the UI */ }
+  }
+
+  // Welcome email: a separate endpoint, so the lead webhook above stays exactly as it was.
+  function sendEmail() {
+    var url = DATA.config.emailEndpoint;
+    if (!url || !state || !state.result || !state.lead.email) return;
+    var body = JSON.stringify({
+      sessionId: state.sessionId,
+      name: state.lead.name,
+      email: state.lead.email,
+      scores: state.result.scores,
+      impact: state.result.impact,
+      commitment: state.commitment || 0,
+      resultUrl: location.href
+    });
+    try {
+      fetch(url, {
+        method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: body, keepalive: true
+      }).catch(function () {});
+    } catch (e) { /* never block the UI */ }
   }
 
   /* ---------- hash ---------- */

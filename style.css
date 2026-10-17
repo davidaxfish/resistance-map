@@ -521,7 +521,9 @@ h1, h2, p, ul, ol, dl, dd { margin: 0; }
 .compare-table td.col-b { color: var(--text); background: rgba(228, 255, 110, 0.06); border-left: 1px solid var(--accent-dim); }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
-.card-lead { border-color: var(--accent-dim); }
+.gate { margin-top: 4px; display: grid; gap: 10px; }
+.gate .kicker { margin-bottom: 0; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .req { color: var(--accent); }
 .warn { color: #FFB38A; }
 .lead-form input[aria-invalid="true"] { border-color: #FFB38A; }
