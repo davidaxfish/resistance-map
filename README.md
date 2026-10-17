@@ -209,7 +209,7 @@ Make 免費方案同時只能啟用一個 Scenario，要跑其他流程時記得
 
 1. 打開名單試算表 → 擴充功能 → Apps Script，新增一個檔案，把 `email-gateway.gs` 全部貼上，存檔。
 2. 上方函式選單選 `authorizeAndTest`，按執行。第一次會跳出授權：選 ring390@gmail.com，按「進階」→「前往（不安全）」→ 允許。
-   權限只有三項：以你的身分寄信、連外讀取 data.json、編輯這份試算表。沒有讀信的權限。
+   權限只有四項：以你的身分寄信、連外讀取 data.json、編輯這份試算表、看到你的 Email 地址。沒有讀信的權限。
    執行完會寄一封測試信到 ring390@gmail.com，`訂閱者` 分頁會多一列。
 3. 部署 → 新增部署作業 → 類型選「網頁應用程式」：執行身分「我」、存取權「所有人」→ 部署，複製 `/exec` 結尾的網址。
 4. 貼到 `data.json` 的 `config.emailEndpoint`，推上 GitHub。
