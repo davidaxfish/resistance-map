@@ -214,6 +214,8 @@ Make 免費方案同時只能啟用一個 Scenario，要跑其他流程時記得
 3. 部署 → 新增部署作業 → 類型選「網頁應用程式」：執行身分「我」、存取權「所有人」→ 部署，複製 `/exec` 結尾的網址。
 4. 貼到 `data.json` 的 `config.emailEndpoint`，推上 GitHub。
 
+目前已部署：Apps Script 專案 `Resistance Map Email Gateway`（綁定名單試算表），Web app 版本 1，執行身分 ring390@gmail.com，存取權「所有人」。改過 `email-gateway.gs` 後要到「部署 → 管理部署作業 → 編輯 → 新版本」，網址不變。
+
 ### 防濫用
 
 端點是公開的，所以：
